@@ -14,6 +14,19 @@ module Enumerable
   def my_select
     return to_enum(:my_select) unless block_given?
 
+    new_array = []
+
+    my_each do |element|
+      if yield(element)
+        new_array << element
+      end
+      
+    end
+    new_array
+  end
+
+
+
 end
 
 # You will first have to define my_each
