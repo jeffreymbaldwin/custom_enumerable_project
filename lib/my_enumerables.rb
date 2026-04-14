@@ -26,7 +26,7 @@ module Enumerable
   end
 
   def my_all?
-    return to_enum(:my_all) unless block_given?
+    return to_enum(:my_all?) unless block_given?
 
     my_each do |element|
       return false unless yield(element)
@@ -36,7 +36,63 @@ module Enumerable
 
   end
 
+  def my_any?
+    return to_enum(:my_any?) unless block_given?
 
+    my_each do |element|
+      return true if yield(element)
+    end
+
+      false
+
+  end
+
+  def my_none?
+    return to_enum(:my_none?) unless block_given?
+
+    my_each do |element|
+      return false if yield(element)
+    end
+
+    true
+
+  end
+
+  def my_each_with_index
+    return to_enum(:my_each_with_index) unless block_given?
+
+    i = 0
+
+    my_each do |element|
+      yield(element, i)
+      i += 1  
+    end
+
+    self
+  end
+
+  def my_count
+    return self.length unless block_given?
+    count = 0
+    my_each do |element|
+      if yield(element)
+        count += 1
+      end
+    end
+    count
+  end
+
+  def my_inject(initial)
+   return to_enum(:my_inject) unless block_given?
+    acc = initial
+
+   my_each_with_index do |element, index|
+
+    acc = yield(acc, element)
+     
+   end
+   acc 
+  end
 
 
 end
@@ -59,3 +115,4 @@ class Array
     self
   end
 end
+
